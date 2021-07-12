@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  did:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: root
+    restart: always
+    ports:
+      - "1060:8000"
+    environment:
+      WORKERS: 1
+      LOG_FOLDER: /var/log/did
+      ACCESS_LOG: '-'
+      ERROR_LOG: '-'
+      LOG_LEVEL: 'CRITICAL'
+      JWT_SECRET_KEY: "secret_key"
+      SQLALCHEMY_DATABASE_URI: 'sqlite:///data.db'
+      JSON_SORT_KEYS: 'False'
+      LOCAL_DEV: 'True'
+    volumes:
+      - .data/did/logs:/var/log/did
+      - .:/opt/did
+    networks:
+        default:
+        internal:
+
+networks:
+    default:
+    internal:
+        internal: true
